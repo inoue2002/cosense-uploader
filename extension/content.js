@@ -35,6 +35,10 @@
     e.preventDefault();
     e.stopImmediatePropagation();
 
+    // Cosense の「Drop files to upload」オーバーレイは自身への dragleave / drop で閉じる。
+    // drop をここで止めると閉じる契機が無くなって残り続けるので、代わりに dragleave を送って閉じる。
+    // オーバーレイはページ全体を覆うので、閉じてから drop 座標の行を探す必要がある。
+    dismissDropOverlay(e.dataTransfer);
     moveCursorTo(e.clientX, e.clientY);
     void uploadAndInsert(files);
   }, true);
@@ -95,6 +99,15 @@
     ta.value = text;
     ta.dispatchEvent(new InputEvent("input", { bubbles: true, data: text, inputType: "insertText" }));
     await sleep(10);
+  }
+
+  // Cosense のドロップ用オーバーレイ (.drag-and-drop.upload) を閉じる
+  function dismissDropOverlay(dataTransfer) {
+    for (const el of document.querySelectorAll(".drag-and-drop")) {
+      try {
+        el.dispatchEvent(new DragEvent("dragleave", { bubbles: true, cancelable: true, dataTransfer }));
+      } catch (_) { /* noop */ }
+    }
   }
 
   // drop 位置の行にカーソルを移す。失敗しても現在のカーソル位置に挿入されるだけなので握りつぶす
