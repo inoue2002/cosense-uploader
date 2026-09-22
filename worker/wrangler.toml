@@ -9,8 +9,8 @@ bucket_name = "cosense-images"
 
 [vars]
 # 配信URLのベース。R2 バケットにカスタムドメインを当てたらそれを書く
-# 未設定なら Worker 自身が GET /<key> で配信する（後述）
-PUBLIC_BASE_URL = "https://i.example.com"
+# 未設定（コメントアウト）なら Worker 自身が GET /<key> で配信する（後述）
+# PUBLIC_BASE_URL = "https://i.example.com"
 # アップロード上限 (bytes)
 MAX_BYTES = "26214400"
 
