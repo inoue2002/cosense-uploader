@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Cosense Image Uploader (self-hosted)",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "Cosense に画像をドラッグ&ドロップ / ペーストしたとき、Gyazo ではなく自前の Cloudflare R2 にアップロードして Cosense 記法で貼り付ける",
   "permissions": ["storage"],
   "optional_host_permissions": ["https://*/*"],

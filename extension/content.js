@@ -5,6 +5,9 @@
 // （Gyazo アップロード）より先に走り、stopImmediatePropagation で止められる。
 
 (() => {
+  const VERSION = chrome.runtime.getManifest().version;
+  // どのバージョンの content script が動いているか DevTools から確認できるようにする
+  document.documentElement.dataset.cosenseUploader = VERSION;
   const TEXTAREA_SELECTOR = "#text-input";
   let settings = { enabled: true };
 
@@ -38,7 +41,7 @@
     // Cosense の「Drop files to upload」オーバーレイは自身への dragleave / drop で閉じる。
     // drop をここで止めると閉じる契機が無くなって残り続けるので、代わりに dragleave を送って閉じる。
     // オーバーレイはページ全体を覆うので、閉じてから drop 座標の行を探す必要がある。
-    dismissDropOverlay(e.dataTransfer);
+    dismissDropOverlay();
     moveCursorTo(e.clientX, e.clientY);
     void uploadAndInsert(files);
   }, true);
@@ -102,11 +105,16 @@
   }
 
   // Cosense のドロップ用オーバーレイ (.drag-and-drop.upload) を閉じる
-  function dismissDropOverlay(dataTransfer) {
-    for (const el of document.querySelectorAll(".drag-and-drop")) {
+  // 実イベントの dataTransfer は再利用せず、空の DataTransfer を渡す（動作確認済みの形）
+  function dismissDropOverlay() {
+    const overlays = document.querySelectorAll(".drag-and-drop");
+    console.debug("[cosense-uploader] dismiss overlay:", overlays.length);
+    for (const el of overlays) {
       try {
-        el.dispatchEvent(new DragEvent("dragleave", { bubbles: true, cancelable: true, dataTransfer }));
-      } catch (_) { /* noop */ }
+        el.dispatchEvent(new DragEvent("dragleave", { bubbles: true, cancelable: true, dataTransfer: new DataTransfer() }));
+      } catch (err) {
+        console.warn("[cosense-uploader] dragleave dispatch failed", err);
+      }
     }
   }
 

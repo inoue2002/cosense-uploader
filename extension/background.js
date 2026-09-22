@@ -51,9 +51,20 @@ async function handleUpload(files) {
     }
     const json = await res.json();
     if (!json.url) throw new Error("Worker の応答に url がありません");
-    urls.push(json.url);
+    urls.push(assertSafeUrl(json.url));
   }
   return urls;
+}
+
+// Cosense 記法 [url] に埋め込むので、https の URL 以外や、記法を壊す文字を含むものは拒否する
+function assertSafeUrl(value) {
+  const s = String(value);
+  let u;
+  try { u = new URL(s); } catch { throw new Error(`Worker の応答 url が不正です: ${s.slice(0, 80)}`); }
+  if (u.protocol !== "https:" || /[\s\[\]]/.test(s)) {
+    throw new Error(`Worker の応答 url が不正です: ${s.slice(0, 80)}`);
+  }
+  return u.href;
 }
 
 function base64ToBytes(b64) {

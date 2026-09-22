@@ -94,8 +94,16 @@ extension/
   content.js          scrapbox.io で drop/paste を横取り → 挿入
   background.js       Worker への fetch（トークンはここだけ）
   options.html/.js    設定・テストアップロード
+scripts/
+  pack-extension.sh   Chrome ウェブストア提出用 zip を dist/ に作る
+CHROMEWEBSTORE.md     ストア掲載文・権限の正当化・提出手順
+PRIVACY.md            プライバシーポリシー（ストアから参照）
 ```
 
 ## 既存 Gyazo 画像の救出（別作業）
 
 Gyazo 復旧後に、Cosense のプロジェクトを JSON エクスポート → `gyazo.com` の URL を抽出 → ダウンロード → この Worker に POST → ページ本文を書き換え、というスクリプトを回せば依存を完全に切れます。必要になったら別途。
+
+## License
+
+MIT
