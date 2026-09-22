@@ -1,0 +1,18 @@
+name = "cosense-uploader"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+# R2 バケット。`wrangler r2 bucket create cosense-images` で作成してから deploy
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "cosense-images"
+
+[vars]
+# 配信URLのベース。R2 バケットにカスタムドメインを当てたらそれを書く
+# 未設定なら Worker 自身が GET /<key> で配信する（後述）
+PUBLIC_BASE_URL = "https://i.example.com"
+# アップロード上限 (bytes)
+MAX_BYTES = "26214400"
+
+# シークレットは wrangler で登録する（toml には書かない）:
+#   wrangler secret put UPLOAD_TOKEN

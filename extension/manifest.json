@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Cosense Image Uploader (self-hosted)",
+  "version": "0.1.0",
+  "description": "Cosense に画像をドラッグ&ドロップ / ペーストしたとき、Gyazo ではなく自前の Cloudflare R2 にアップロードして Cosense 記法で貼り付ける",
+  "permissions": ["storage"],
+  "optional_host_permissions": ["https://*/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://scrapbox.io/*"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "action": {
+    "default_title": "Cosense Image Uploader 設定"
+  },
+  "icons": {
+    "16": "icons/16.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  }
+}
