@@ -94,6 +94,10 @@ extension/
   content.js          scrapbox.io で drop/paste を横取り → 挿入
   background.js       Worker への fetch（トークンはここだけ）
   options.html/.js    設定・テストアップロード
+scripts/
+  pack-extension.sh   Chrome ウェブストア提出用 zip を dist/ に作る
+CHROMEWEBSTORE.md     ストア掲載文・権限の正当化・提出手順
+PRIVACY.md            プライバシーポリシー（ストアから参照）
 ```
 
 ## 既存 Gyazo 画像の救出（別作業）
