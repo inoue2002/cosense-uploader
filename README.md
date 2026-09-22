@@ -2,13 +2,26 @@
 
 Cosense (scrapbox.io) に画像を D&D / ペーストしたとき、Gyazo の代わりに自前の Cloudflare R2 へアップロードして `[https://...png]` を貼り付ける Chrome 拡張と、その受け口になる Cloudflare Worker。
 
-```
-Cosense (Chrome)                Cloudflare
-┌──────────────────┐   POST /upload   ┌────────────┐  put   ┌──────┐
-│ content.js       │ ───────────────▶ │  Worker    │ ─────▶ │  R2  │
-│  drop/paste 横取り │ ◀─────────────── │ 認証・EXIF除去│        └──┬───┘
-│  [url] を挿入      │   { url }        └────────────┘           │ 配信 (egress 無料)
-└──────────────────┘                                     https://i.example.com/xxx.png
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as ユーザー
+    participant C as content.js<br/>(scrapbox.io)
+    participant B as background.js
+    participant W as Cloudflare Worker
+    participant R as R2
+    participant V as 閲覧者
+
+    U->>C: 画像を D&D / Cmd+V
+    C->>C: Cosense の Gyazo 処理を横取り<br/>(capture フェーズで stopImmediatePropagation)
+    C->>B: sendMessage(画像 base64)
+    B->>W: POST /upload<br/>Authorization: Bearer TOKEN
+    W->>W: 認証・EXIF / メタデータ除去
+    W->>R: put(ランダムキー.png)
+    W-->>B: { url }
+    B-->>C: urls
+    C->>C: #text-input に [url] を挿入
+    V->>R: GET https://i.example.com/xxx.png<br/>(カスタムドメイン, egress 無料)
 ```
 
 ## 1. Worker + R2 をデプロイ
