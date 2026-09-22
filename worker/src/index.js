@@ -52,6 +52,9 @@ export default {
       obj.writeHttpMetadata(headers);
       headers.set("etag", obj.httpEtag);
       headers.set("cache-control", "public, max-age=31536000, immutable");
+      // 画像として表示する以外の使われ方を封じる。SVG に script が入っていても実行させない。
+      headers.set("content-security-policy", "default-src 'none'; style-src 'unsafe-inline'; sandbox");
+      headers.set("x-content-type-options", "nosniff");
       return new Response(request.method === "HEAD" ? null : obj.body, { headers });
     }
 

@@ -85,6 +85,7 @@ Cosense 上で画像を貼り付ける操作を、ユーザー自身が用意し
 
 | version | 変更 |
 | --- | --- |
+| 0.1.3 | Worker から返った URL を https かつ Cosense 記法を壊さない文字列に限定して挿入するようにした（設定した Worker 以外を信用しないための防御） |
 | 0.1.2 | Cosense のドロップ用オーバーレイが drop 後に残る問題を修正。content script のバージョンを `<html data-cosense-uploader>` に出す |
 | 0.1.1 | オーバーレイ対策の初版（dataTransfer の扱いが未検証だったため 0.1.2 で修正） |
 | 0.1.0 | 初版 |

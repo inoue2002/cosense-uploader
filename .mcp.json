@@ -4,7 +4,7 @@
       "type": "stdio",
       "command": "npx",
       "args": [
-        "chrome-devtools-mcp@latest",
+        "chrome-devtools-mcp@1.9.0",
         "--categoryExtensions",
         "--autoConnect"
       ],
