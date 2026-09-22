@@ -99,3 +99,7 @@ extension/
 ## 既存 Gyazo 画像の救出（別作業）
 
 Gyazo 復旧後に、Cosense のプロジェクトを JSON エクスポート → `gyazo.com` の URL を抽出 → ダウンロード → この Worker に POST → ページ本文を書き換え、というスクリプトを回せば依存を完全に切れます。必要になったら別途。
+
+## License
+
+MIT
